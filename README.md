@@ -12,8 +12,6 @@ For the moment, EDFT is released for Windows only. There is nothing inherently W
 
 ## Installation and Usage
 
-___
-
 ### Installation
 Windows Installers have been provided in _Releases_. To handle cAPI authentication, EDFT needs to register a custom URI handler in the Registry. Unfortunately, this means the installer requires elevation to Administrator privileges. However, the application itself does not—once the handler is registered, the application can use it with normal user privileges.
 
@@ -21,8 +19,6 @@ Due to restrictions imposed by Frontier, the binaries provided here are the only
 
 
 ### Usage
-
----
 
 After first launch, the user will be presented with a blank table area, an input box, and an "Add Account" button.
 
@@ -46,19 +42,14 @@ Tonnage is the sum of all cargo loaded onto your carrier (whether it is for sale
 
 ## Known Issues
 
-___
-
 - When adding a new account, once the authentication process is complete, the main EDFT window becomes briefly unresponsive as the data for that new account is loaded from cAPI. Expect a 2-5 second delay after completing authentication for each new account.
 - UI is _ugly_. I know.
 
 ## License
 
----
 
 MIT
 
 ## Contributing
-
----
 
 Pull requests are welcome. Please ensure that your code matches the Black code style _prior_ to submitting a PR.
