@@ -13,7 +13,7 @@ For the moment, EDFT is released for Windows only. There is nothing inherently W
 ## Installation and Usage
 
 ### Installation
-Windows Installers have been provided in _Releases_. To handle cAPI authentication, EDFT needs to register a custom URI handler in the Registry. Unfortunately, this means the installer requires elevation to Administrator privileges. However, the application itself does not—once the handler is registered, the application can use it with normal user privileges.
+Windows Installers have been provided in [Releases](https://github.com/axleantilles/EDFleetTracker/releases). To handle cAPI authentication, EDFT needs to register a custom URI handler in the Registry. Unfortunately, this means the installer requires elevation to Administrator privileges. However, the application itself does not—once the handler is registered, the application can use it with normal user privileges.
 
 Due to restrictions imposed by Frontier, the binaries provided here are the only way to obtain a working copy of the application—developers are forbidden from sharing their API credentials, so attempts to run the Python code directly will fail. Anyone willing to obtain their own API credentials is welcome to reach out to me for assistance in integrating them.
 
