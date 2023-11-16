@@ -25,6 +25,12 @@ LABEL = 0
 ACCOUNT = 1
 COLUMN = 2
 
+""" The Ladder """
+LADDER = {'Gali': 'N16', 'Wregoe ZE-B c28-2': 'N15', 'Wregoe OP-D b58-0': 'N14', 'Plaa Trua QL-B c27-0': 'N13',
+          'Plaa Trua WQ-C d13-0': 'N12', 'HD 107865': 'N11', 'HD 105548': 'N10', 'HD 104785': 'N9', 'HD 102000': 'N8',
+          'HD 102779': 'N7', 'HD 104392': 'N6', 'HIP 56843': 'N5', 'HIP 57478': 'N4', 'HIP 57784': 'N3',
+          'HD 104495': 'N2', 'HD 105341': 'N1', 'HIP 58832': 'N0'}
+
 
 def dynamic_item_spec(owner, display_name, keys, post_processors) -> dict:
     """
@@ -103,6 +109,12 @@ class EliteDangerousFleetTracker:
                 (self.passthrough,),
             ),
             dynamic_item_spec(
+                Owner.COMMANDER,
+                "N#",
+                ("ship", "starsystem", "name"),
+                (self.ladder_display,),
+            ),
+            dynamic_item_spec(
                 Owner.FLEETCARRIER,
                 "Callsign",
                 ("name", "callsign"),
@@ -131,6 +143,12 @@ class EliteDangerousFleetTracker:
                 "System",
                 ("currentStarSystem",),
                 (self.passthrough,),
+            ),
+            dynamic_item_spec(
+                Owner.FLEETCARRIER,
+                "N#",
+                ("currentStarSystem",),
+                (self.ladder_display,),
             ),
             dynamic_item_spec(
                 Owner.FLEETCARRIER,
@@ -546,6 +564,18 @@ class EliteDangerousFleetTracker:
         :return: the total cargo loaded.
         """
         return fc_data["cargoNotForSale"] + fc_data["cargoForSale"]
+
+    @staticmethod
+    def ladder_display(system) -> str:
+        """
+        Returns a label showing the ladder position when a ladder system is detected.
+        :param system: The system name
+        :return: the formatted system name, with N label where appropriate
+        """
+        if system in LADDER:
+            return LADDER[system]
+        else:
+            return ""
 
     @staticmethod
     def blank_table_row(parent, row, account, colstart, number_cols) -> None:
