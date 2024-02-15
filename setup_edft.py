@@ -20,7 +20,16 @@ import requests
 import hashlib
 import base64
 import json
-from edft_secrets import CLIENT_ID
+from edft_secrets import CLIENT_ID, FERNET_KEY
+from cryptography.fernet import Fernet
 from edft_shared_constants import API_QUERY_INTERVAL
+import cffi
 
-py2exe.freeze(windows=[{"script": "EDFT.py", "icon_resources": [(1, "edft.ico")]}])
+py2exe.freeze(
+    options={
+        "py2exe": {
+            "packages": ["cryptography", "cffi"],
+        }
+    },
+    windows=[{"script": "EDFT.py", "icon_resources": [(1, "edft.ico")]}],
+)

@@ -4,7 +4,8 @@ import hashlib
 import base64
 import json
 from enum import Enum
-from edft_secrets import CLIENT_ID
+from edft_secrets import CLIENT_ID, FERNET_KEY
+from cryptography.fernet import Fernet
 import logging
 import time
 from edft_shared_constants import API_QUERY_INTERVAL
@@ -58,6 +59,7 @@ class Account:
     reauth_prompted = False
     needs_sync = False
     auth_uri = ""
+    cipher = None
 
     def __init__(self, conn, log_handler, friendly_name):
         self.name = friendly_name
@@ -67,6 +69,7 @@ class Account:
         self.log_handler = log_handler
         self.logger.addHandler(log_handler)
         self.logger.debug("Initializing Account: " + self.name)
+        self.cipher = Fernet(FERNET_KEY)
         cur = self.conn.cursor()
         res = cur.execute("select * from accounts where name=?", (self.name,))
         data = res.fetchone()
@@ -75,8 +78,9 @@ class Account:
             self.code = data[2]
             self.code_challenge = data[3]
             self.code_verifier = data[4]
-            self.access_token = data[5]
-            self.refresh_token = data[6]
+            self.access_token = self.cipher.decrypt(data[5]).decode("utf8")
+            self.refresh_token = self.cipher.decrypt(data[6]).decode("utf8")
+            print(self.access_token)
             self.reauth_required = data[7] == 1
             self.reauth_prompted = 0  # Regardless of previous state, if we shut down before processing just regenerate.
             self.cmdr_data = json.loads(data[9] if data[9] is not None else "{}")
@@ -138,7 +142,7 @@ class Account:
         self.conn.commit()
 
         self.auth_uri = (
-            API_AUTH_HOST + API_AUTH_ENDPOINT + "?audience=frontier"
+            API_AUTH_HOST + API_AUTH_ENDPOINT + "?audience=all"
             "&scope=auth%20capi"
             "&response_type=code"
             "&client_id={0}"
@@ -274,8 +278,8 @@ class Account:
             "update accounts set access_token=?, refresh_token=?, code=null, reauth_required=?, "
             "reauth_prompted=? where name=?",
             (
-                self.access_token,
-                self.refresh_token,
+                self.cipher.encrypt(self.access_token.encode("utf8")),
+                self.cipher.encrypt(self.refresh_token.encode("utf8")),
                 self.reauth_required,
                 self.reauth_prompted,
                 self.name,
