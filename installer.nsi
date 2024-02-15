@@ -39,7 +39,10 @@
 ;Languages
  
   !insertmacro MUI_LANGUAGE "English"
-
+  
+; post processes
+!finalize 'signtool sign /a /fd SHA256 /t http://timestamp.digicert.com %1' = 0
+!uninstfinalize 'signtool sign /a /fd SHA256 /t http://timestamp.digicert.com %1' = 0
   
 Section "EDFT" SecMain
 
