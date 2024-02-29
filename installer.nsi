@@ -58,6 +58,7 @@ Section "EDFT" SecMain
   WriteRegStr HKCR "edft" "" "URL:edft Protocol"
   WriteRegStr HKCR "edft" "URL Protocol" ""
   WriteRegStr HKCR "edft\shell\open\command" "" "$\"$INSTDIR\dist\helper.exe$\" $\"%1$\""
+  !execute 'signtool sign /a /fd SHA256 /t http://timestamp.digicert.com dist/EDFT.exe'
   File /r dist
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"

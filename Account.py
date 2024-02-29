@@ -80,7 +80,6 @@ class Account:
             self.code_verifier = data[4]
             self.access_token = self.cipher.decrypt(data[5]).decode("utf8")
             self.refresh_token = self.cipher.decrypt(data[6]).decode("utf8")
-            print(self.access_token)
             self.reauth_required = data[7] == 1
             self.reauth_prompted = 0  # Regardless of previous state, if we shut down before processing just regenerate.
             self.cmdr_data = json.loads(data[9] if data[9] is not None else "{}")
@@ -137,7 +136,7 @@ class Account:
                     )
             case _:
                 self.logger.error("invalid TokenRequestType passed: " + request_type)
-                return
+                return "error://invalid"
         self.reauth_prompted = True
         self.conn.commit()
 

@@ -89,7 +89,7 @@ class EliteDangerousFleetTracker:
     columns = None
 
     def __init__(self, conn, log_handler):
-        self.version = "0.2.1"
+        self.version = "0.2.2"
         self.conn = conn
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
